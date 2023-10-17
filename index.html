@@ -7,21 +7,30 @@
   <title>Gradio Demo</title>
 </head>
 <body>
-  <!-- Add your HTML elements here -->
+  <!-- Add a div element where you want to display the prediction -->
+  <div id="prediction"></div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@gradio/client"></script>
 <script type="module">
   import { client } from "@gradio/client";
 
-  const response_0 = await fetch("https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png");
-  const exampleImage = await response_0.blob();
-  						
-  const app = await client("https://fastbook1-cars.hf.space/--replicas/xcvvf/");
-  const result = await app.predict("/predict", [
-  				exampleImage, 	// blob in 'img' Image component
-  	]);
+  // Wrap your code in an async function and call it after the page is loaded
+  window.addEventListener("load", async () => {
+    try {
+      const response_0 = await fetch("https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png");
+      const exampleImage = await response_0.blob();
+      						
+      const app = await client("https://fastbook1-cars.hf.space/--replicas/xcvvf/");
+      const result = await app.predict("/predict", [
+      				exampleImage, 	// blob in 'img' Image component
+      	]);
 
-console.log(result.data);
-
+      // Use the result.display() method to show the prediction in the div element
+      result.display(elem_id="prediction");
+    } catch (error) {
+      // Handle any errors that might occur
+      console.error(error);
+    }
+  });
 </script>
 </html>
